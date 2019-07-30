@@ -1,7 +1,9 @@
 print("*************************************************\n kwota zarobiona minus ubezpieczenie spoleczne,\n zaokraglenie do pelnej zlotowki,\n pomnozenie razy procent podatku,\n zaokraglamy,\n odejmujemy ubezpieczenie zdrowotne do odliczenia\n*************************************************\n\n")
+
 print("Podaj zarobiona kwote: ")
 
-input()
+val = input("Enter your value: ") 
+print(val) 
 
 ubezp_zdrow_odl = 294.78
 ubezp_spol = 555.89
