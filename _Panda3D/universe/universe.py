@@ -5,6 +5,7 @@ from panda3d.core import *
 from direct.gui.DirectGui import *
 
 import sys
+import gltf
 
 
 class World(object):
@@ -16,12 +17,16 @@ class World(object):
         )
 
         base.setBackgroundColor(0.5, 0.5, 0)
-
         base.disableMouse()
-
         camera.setPos(0, 0, 45)
-
         camera.setHpr(0, -90, 0)
+
+        self.sizescale = 0.5
+
+        self.loadPlanets()
+
+    def loadPlanets(self):
+        gltf.patch_loader(self.loader)
 
 w = World()
 
