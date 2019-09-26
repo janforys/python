@@ -18,15 +18,21 @@ class World(object):
 
         base.setBackgroundColor(0.5, 0.5, 0)
         base.disableMouse()
-        camera.setPos(0, 0, 45)
+        camera.setPos(0, 5, 45)
         camera.setHpr(0, -90, 0)
 
         self.sizescale = 0.5
 
-        self.loadPlanets()
+        self.loadCube()
 
-    def loadPlanets(self):
-        gltf.patch_loader(self.loader)
+    def loadCube(self):
+        self.cube = loader.loadModel("models/cube.glb")
+        self.cube.reparentTo(render)
+        self.cube.setPos(10, 0, 0)
+        self.cube.setScale(4 * self.sizescale)
+
+        self.sun = loader.loadModel("models/sun.glb")
+        self.sun.reparentTo(render)
 
 w = World()
 
