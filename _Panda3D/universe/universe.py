@@ -23,17 +23,24 @@ class World(object):
 
         self.sizescale = 0.5
 
-        self.loadCube()
+        self.loadPlanets()
 
-    def loadCube(self):
-        self.cube = loader.loadModel("models/cube.glb")
-        self.cube.reparentTo(render)
-        self.cube.setPos(10, 0, 0)
-        self.cube.setScale(4 * self.sizescale)
+    def loadPlanets(self):
 
-        self.sun = loader.loadModel("models/sun.glb")
+        self.sky = loader.loadModel("meshes/sky.glb")
+        self.sky.reparentTo(render)
+        self.sky.setScale(4)
+        self.sky.setPos(0, 5, -25)
+        self.sky_tex = loader.loadTexture("textures/sky_stars.jpg")
+        self.sky.setTexture(self.sky_tex, 1)
+
+        self.earth = loader.loadModel("meshes/earth.glb")
+        self.earth.reparentTo(render)
+        self.earth.setPos(10, 0, 0)
+        self.earth.setScale(4 * self.sizescale)
+
+        self.sun = loader.loadModel("meshes/sun.glb")
         self.sun.reparentTo(render)
 
 w = World()
-
 base.run()
