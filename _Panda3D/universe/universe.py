@@ -22,25 +22,49 @@ class World(object):
         camera.setHpr(0, -90, 0)
 
         self.sizescale = 0.5
+        self.yearscale = 60
+        self.dayscale = self.yearscale / 365.0 * 10
 
         self.loadPlanets()
+        self.rotatePlanets()
 
     def loadPlanets(self):
 
-        self.sky = loader.loadModel("meshes/sky.glb")
+        self.orbit_root_earth = render.attachNewNode('orbit_root_earth')
+
+        # Sky Sphere
+        self.sky = loader.loadModel("meshes/sky2.glb")
         self.sky.reparentTo(render)
         self.sky.setScale(4)
         self.sky.setPos(0, 5, -25)
-        self.sky_tex = loader.loadTexture("textures/sky_stars.jpg")
+        self.sky_tex = loader.loadTexture("textures/stars_1k_tex.jpg")
         self.sky.setTexture(self.sky_tex, 1)
 
+        # Sun
+        self.sun = loader.loadModel("meshes/sun.glb")
+        self.sun.reparentTo(render)
+        self.sun_tex = loader.loadTexture("textures/sun_tex.jpg")
+        self.sun.setTexture(self.sun_tex, 1)
+
+        # Earth
         self.earth = loader.loadModel("meshes/earth.glb")
         self.earth.reparentTo(render)
         self.earth.setPos(10, 0, 0)
-        self.earth.setScale(4 * self.sizescale)
+        self.earth.setScale(3.5 * self.sizescale)
+        self.earth_tex = loader.loadTexture("textures/sky_stars_2.jpg")
+        self.earth.setTexture(self.earth_tex, 1)
 
-        self.sun = loader.loadModel("meshes/sun.glb")
-        self.sun.reparentTo(render)
+    def rotatePlanets(self):
+
+        # Rotate Earth
+        self.orbit_period_earth = self.orbit_root_earth.hprInterval(
+            self.yearscale, (360, 0, 0))
+        self.day_period_earth = self.earth.hprInterval(
+            self.dayscale, (360, 0, 0))
+
+        self.orbit_period_earth.loop()
+        self.day_period_earth.loop()
+
 
 w = World()
 base.run()
