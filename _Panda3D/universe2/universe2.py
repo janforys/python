@@ -40,6 +40,13 @@ class World(object):
         self.ekeyEventText = self.genLabelText("[E]: toggle earth [ running ]", 3)
         self.yearCounterText = self.genLabelText("0 years completed", 4)
 
+        self.accept("escape", sys.exit)
+        self.accept("mouse1", self.handleMouseClick)
+        self.accept("e", self.handleEarth)
+        self.accept("s", self.togglePlanet, ["Sun"], self.day_period_sun, None, self.skeyEventText )
+        self.accept("newYear", self.incYear)
+
+
     def loadPlanets(self):
 
         self.orbit_root_earth = render.attachNewNode('orbit_root_earth')
@@ -84,6 +91,10 @@ class World(object):
     def genLabelText(self, text, i):
         return OnscreenText(text=text, pos=(-.03, -.08 * (i + 0.5)), fg=(1, 1, 1, 1),
                             parent=base.a2dTopRight, align=TextNode.ARight, scale=.06)
+
+    def incYear(self):
+        self.yearCounter += 1
+        self.yearCounterText.setText(str(self.yearCounter) + " Earth years completed")
 
 
 w = World()
