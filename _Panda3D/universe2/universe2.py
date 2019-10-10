@@ -11,7 +11,7 @@ import gltf
 
 base = ShowBase()
 
-class World(object):
+class World(DirectObject):
 
     def __init__(self):
         self.title = OnscreenText(
