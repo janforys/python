@@ -11,9 +11,10 @@ import gltf
 
 base = ShowBase()
 
-class World(DirectObject):
+class MyClassCalledWorld(DirectObject):
 
     def __init__(self):
+
         self.title = OnscreenText(
             text="Universe 2",
             parent=base.a2dBottomLeft, align=TextNode.A_left,
@@ -43,9 +44,9 @@ class World(DirectObject):
         self.accept("escape", sys.exit)
         self.accept("mouse1", self.handleMouseClick)
         self.accept("e", self.handleEarth)
-        self.accept("s", self.togglePlanet, ["Sun"], self.day_period_sun, None, self.skeyEventText )
+        self.accept("s", self.togglePlanet, ["Sun"], self.day_period_sun, None, self.skeyEventText)
         self.accept("newYear", self.incYear)
-
+    # END __init__
 
     def loadPlanets(self):
 
@@ -95,6 +96,30 @@ class World(DirectObject):
     def incYear(self):
         self.yearCounter += 1
         self.yearCounterText.setText(str(self.yearCounter) + " Earth years completed")
+
+    def handleEarth(self):
+        self.togglePlanet("Earth", self.day_period_earth,
+                          self.orbit_period_earth, self.ekeyEventText)
+
+    def togglePlanet(self, planet, day, orbit=None, text=None):
+        if day.isPlaying():
+            print("Pausing " + planet)
+            state = " PAUSED"
+        else:
+            print("Resuming" + planet)
+            state = " RUNNING"
+
+        if text:
+            old = text.getText()
+            text.setText(old[0:old.rfind('')] + state)
+
+        self.toggleInterval(day)
+        if orbit:
+          self.toggleInterval(orbit)
+
+    def toggleInterval(self):
+
+    def handleMouseClick(self):
 
 
 w = World()
