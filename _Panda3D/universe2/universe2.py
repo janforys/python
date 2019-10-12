@@ -44,7 +44,7 @@ class MyClassCalledWorld(DirectObject):
         self.accept("escape", sys.exit)
         self.accept("mouse1", self.handleMouseClick)
         self.accept("e", self.handleEarth)
-        self.accept("s", self.togglePlanet, ["Sun"], self.day_period_sun, None, self.skeyEventText)
+        self.accept("s", self.togglePlanet, ["Sun", self.day_period_sun, None, self.skeyEventText])
         self.accept("newYear", self.incYear)
     # END __init__
 
@@ -117,10 +117,43 @@ class MyClassCalledWorld(DirectObject):
         if orbit:
           self.toggleInterval(orbit)
 
-    def toggleInterval(self):
+    #def toggleInterval(self):
 
     def handleMouseClick(self):
+        # When the mouse is clicked, if the simulation is running pause all the
+        # planets and sun, otherwise resume it
+        if self.simRunning:
+            print("Pausing Simulation")
+            # changing the text to reflect the change from "RUNNING" to
+            # "PAUSED"
+            self.mouse1EventText.setText(
+                "Mouse Button 1: Toggle entire Solar System [PAUSED]")
+            # For each planet, check if it is moving and if so, pause it
+            # Sun
+            if self.day_period_sun.isPlaying():
+                self.togglePlanet("Sun", self.day_period_sun, None, self.skeyEventText)
+
+            # Earth
+            if self.day_period_earth.isPlaying():
+                self.togglePlanet("Earth", self.day_period_earth, self.orbit_period_earth, self.ekeyEventText)
+
+        else:
+            # "The simulation is paused, so resume it
+            print("Resuming Simulation")
+            self.mouse1EventText.setText(
+                "Mouse Button 1: Toggle entire Solar System [RUNNING]")
+            # the not operator does the reverse of the previous code
+            if not self.day_period_sun.isPlaying():
+                self.togglePlanet("Sun", self.day_period_sun, None, self.skeyEventText)
+
+            if not self.day_period_earth.isPlaying():
+                self.togglePlanet("Earth", self.day_period_earth, self.orbit_period_earth, self.ekeyEventText)
+
+        # toggle self.simRunning
+        self.simRunning = not self.simRunning
+
+    # end handleMouseClick
 
 
-w = World()
+w = MyClassCalledWorld()
 base.run()
