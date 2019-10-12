@@ -1,3 +1,4 @@
+from direct import interval
 from direct.showbase.ShowBase import ShowBase
 from panda3d.core import TextNode
 from direct.interval.IntervalGlobal import *
@@ -11,7 +12,7 @@ import gltf
 
 base = ShowBase()
 
-class MyClassCalledWorld(DirectObject):
+class MyWorld(DirectObject):
 
     def __init__(self):
 
@@ -113,16 +114,21 @@ class MyClassCalledWorld(DirectObject):
             old = text.getText()
             text.setText(old[0:old.rfind('')] + state)
 
-        self.toggleInterval(day)
-        if orbit:
-          self.toggleInterval(orbit)
+            self.toggleInterval(day)
 
-    #def toggleInterval(self):
+        if orbit:
+            self.toggleInterval(orbit)
+
+    def toggleInterval(self, interval):
+        if interval.isPlaying():
+            interval.pause()
+        else:
+            interval.resume()
 
     def handleMouseClick(self):
         # When the mouse is clicked, if the simulation is running pause all the
         # planets and sun, otherwise resume it
-        if self.simRunning:
+        if self.simulationRunning:
             print("Pausing Simulation")
             # changing the text to reflect the change from "RUNNING" to
             # "PAUSED"
@@ -150,10 +156,10 @@ class MyClassCalledWorld(DirectObject):
                 self.togglePlanet("Earth", self.day_period_earth, self.orbit_period_earth, self.ekeyEventText)
 
         # toggle self.simRunning
-        self.simRunning = not self.simRunning
+        self.simulationRunning = not self.simulationRunning
 
     # end handleMouseClick
 
 
-w = MyClassCalledWorld()
+w = MyWorld()
 base.run()
