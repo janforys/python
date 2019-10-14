@@ -37,16 +37,16 @@ class MyWorld(DirectObject):
         self.loadPlanets()
         self.rotatePlanets()
 
-        self.mouse1EventText = self.genLabelText("[LMB]: Toggle entire Solar System [ RUNNING ]", 1)
-        self.skeyEventText = self.genLabelText("[S]: toggle sun [ running ]", 2)
-        self.ekeyEventText = self.genLabelText("[E]: toggle earth [ running ]", 3)
+        self.mouse1EventText = self.genLabelText("[LMB]: Toggle entire Solar System [RUNNING]", 1)
+        self.skeyEventText = self.genLabelText("[S]: Toggle Sun [RUNNING]", 2)
+        self.ekeyEventText = self.genLabelText("[E]: toggle earth [RUNNING]", 3)
         self.yearCounterText = self.genLabelText("0 years completed", 4)
 
         self.accept("escape", sys.exit)
         self.accept("mouse1", self.handleMouseClick)
         self.accept("e", self.handleEarth)
         self.accept("s", self.togglePlanet, ["Sun", self.day_period_sun, None, self.skeyEventText])
-        self.accept("newYear", self.incYear)
+        self.accept("newYearss", self.incYear)
     # END __init__
 
     def loadPlanets(self):
@@ -82,8 +82,9 @@ class MyWorld(DirectObject):
         self.day_period_sun.loop()
 
         # Rotate Earth
-        self.orbit_period_earth = self.orbit_root_earth.hprInterval(
-            self.yearscale, (360, 0, 0))
+        self.orbit_period_earth = Sequence(self.orbit_root_earth.hprInterval(
+            self.yearscale, (360, 0, 0)),
+            Func(messenger.send, "newYearss"))
         self.day_period_earth = self.earth.hprInterval(
             self.dayscale, (360, 0, 0))
 
@@ -105,14 +106,14 @@ class MyWorld(DirectObject):
     def togglePlanet(self, planet, day, orbit=None, text=None):
         if day.isPlaying():
             print("Pausing " + planet)
-            state = " PAUSED"
+            state = " [PAUSED]"
         else:
             print("Resuming" + planet)
-            state = " RUNNING"
+            state = " [RUNNING]"
 
         if text:
             old = text.getText()
-            text.setText(old[0:old.rfind('')] + state)
+            text.setText(old[0:old.rfind(' ')] + state)
 
             self.toggleInterval(day)
 
